@@ -1,13 +1,19 @@
 import streamlit as st
-st.title(":red[歴史単語]$$writter$$")
-st.write("$こんにちは。皆さん！今日も元気ですか？ $")
-st.write("$私は元気です！さあ勉強を開始しましょう！$")
-if st.button("$Let's play study!$"):
-    st.write("_the new game!!_")
+import pandas as pd
+import numpy as np
 
+st.set_page_config(page_title="生物用語ガチャ")
+
+# タイトルと説明
+st.title('生物用語ガチャ')
+
+st.write('生物用語をランダムに表示して、勉強をサポートします！')
+st.write('がんばってください！')
+
+# Load the data
 @st.cache
 def load_data():
-    return pd.read_excel("歴史単語～世界史～.xlsx")
+    return pd.read_excel("科学部情報班　生物ガチャ.xlsx")
 
 words_df = load_data()
 
@@ -31,9 +37,9 @@ if 'selected_word' in st.session_state:
     st.header(f"単語名: {st.session_state.selected_word['単語']}")
     st.subheader(f"レア度: {st.session_state.selected_word['レア度']}")
 
-    # 意味を確認するボタンを追加
-    if st.button('意味を確認する'):
+    # 説明を確認するボタンを追加
+    if st.button('説明を確認する'):
         st.session_state.display_meaning = True
 
     if st.session_state.display_meaning:
-        st.write(f"意味: {st.session_state.selected_word['意味']}")
+        st.write(f"説明: {st.session_state.selected_word['説明']}")
