@@ -4,7 +4,7 @@ import numpy as np
 
 st.set_page_config(page_title="生物用語ガチャ")
 
-# タイトルと説明
+# タイトルと説
 st.title('生物用語ガチャ')
 
 st.write('生物用語をランダムに表示して、勉強をサポートします！')
