@@ -1,45 +1,42 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
+import time
 
-st.set_page_config(page_title="生物用語ガチャ")
+target = "Streamlit makes apps easy!"
 
-# タイトルと説
-st.title('生物用語ガチャ')
+# 初期化
+if "correct_input" not in st.session_state:
+    st.session_state.correct_input = ""
+if "start_time" not in st.session_state:
+    st.session_state.start_time = None
 
-st.write('生物用語をランダムに表示して、勉強をサポートします！')
-st.write('がんばってください！')
+st.title("Typing Training")
+st.write(f"お題: **{target}**")
 
-# Load the data
-@st.cache
-def load_data():
-    return pd.read_excel("aa.xlsx")
+# 入力
+user_input = st.text_input("入力してください:", st.session_state.correct_input)
 
-words_df = load_data()
+# タイマー開始
+if user_input and st.session_state.start_time is None:
+    st.session_state.start_time = time.time()
 
-# ガチャ機能
-if st.button('ガチャを引く！'):
-    rarity_probs = {
-        'N': 0.4,
-        'R': 0.3,
-        'SR': 0.2,
-        'SSR': 0.1
-    }
-    chosen_rarity = np.random.choice(list(rarity_probs.keys()), p=list(rarity_probs.values()))
-    subset_df = words_df[words_df['レア度'] == chosen_rarity]
-    selected_word = subset_df.sample().iloc[0]
-    
-    # セッションステートに選択された単語を保存
-    st.session_state.selected_word = selected_word
-    st.session_state.display_meaning = False
+# 判定
+if target.startswith(user_input):
+    # 正しい部分を更新
+    st.session_state.correct_input = user_input
+else:
+    # 間違った場合 → 強制的に正しい部分まで戻す
+    st.session_state.correct_input = st.session_state.correct_input
 
-if 'selected_word' in st.session_state:
-    st.header(f"単語名: {st.session_state.selected_word['単語']}")
-    st.subheader(f"レア度: {st.session_state.selected_word['レア度']}")
+# 正誤表示
+colored_text = ""
+for i, c in enumerate(target):
+    if i < len(st.session_state.correct_input):
+        colored_text += f"<span style='color:green'>{c}</span>"
+    else:
+        colored_text += f"<span style='color:gray'>{c}</span>"
+st.markdown(colored_text, unsafe_allow_html=True)
 
-    # 説明を確認するボタンを追加
-    if st.button('説明を確認する'):
-        st.session_state.display_meaning = True
-
-    if st.session_state.display_meaning:
-        st.write(f"説明: {st.session_state.selected_word['説明']}")
+# クリア判定
+if st.session_state.correct_input == target:
+    elapsed = time.time() - st.session_state.start_time
+    st.success(f"✅ 正解！ 経過時間: {elapsed:.2f} 秒")
