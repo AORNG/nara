@@ -12,28 +12,29 @@ if "start_time" not in st.session_state:
 st.title("Typing Training")
 st.write(f"お題: **{target}**")
 
-# 入力
+# 入力欄（常に正しい部分だけを表示）
 user_input = st.text_input("入力してください:", value=st.session_state.correct_input)
 
 # タイマー開始
 if user_input and st.session_state.start_time is None:
     st.session_state.start_time = time.time()
 
-# 一文字ずつ判定
+# 判定（必ず1文字ずつチェック）
 if len(user_input) > len(st.session_state.correct_input):
-    # 新しい文字が入力された場合
+    # 入力された最新の文字
+    next_char = user_input[-1]
     next_index = len(st.session_state.correct_input)
-    if target.startswith(user_input):
-        # 正しい場合のみ更新
-        st.session_state.correct_input = user_input
+
+    # 正しい文字なら進む
+    if next_char == target[next_index]:
+        st.session_state.correct_input += next_char
+        st.experimental_rerun()
     else:
-        # 間違った場合 → 入力を戻す
+        # 誤入力は無効化 → 強制的に戻す
         st.warning("❌ 間違いです！")
-        st.session_state.correct_input = st.session_state.correct_input
-        # 再描画で強制的に戻す
         st.experimental_rerun()
 
-# 正誤表示
+# 正誤表示（色付け）
 colored_text = ""
 for i, c in enumerate(target):
     if i < len(st.session_state.correct_input):
