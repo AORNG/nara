@@ -15,8 +15,7 @@ p5_code = """
     
       function draw() {
         if(key === 'Enter'){
-            fill(100, 150, 255);
-            ellipse(mouseX, mouseY, 50, 50);
+            circles.push({x: random(width), y: random(height), color: color(random(255), random(255), random(255))});
         }
       }
     </script>
