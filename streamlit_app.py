@@ -14,7 +14,7 @@ p5_code = """
       }
     
       function draw() {
-        if(key === Enter){
+        if(key === 'Enter'){
             fill(100, 150, 255);
             ellipse(mouseX, mouseY, 50, 50);
         }
