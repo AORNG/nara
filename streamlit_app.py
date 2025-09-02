@@ -12,10 +12,12 @@ p5_code = """
         createCanvas(400, 400);
         background(220);
       }
-
+    
       function draw() {
-        fill(100, 150, 255);
-        ellipse(mouseX, mouseY, 50, 50);
+        if(key === Enter){
+            fill(100, 150, 255);
+            ellipse(mouseX, mouseY, 50, 50);
+        }
       }
     </script>
   </head>
