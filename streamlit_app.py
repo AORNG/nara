@@ -13,19 +13,25 @@ st.title("Typing Training")
 st.write(f"お題: **{target}**")
 
 # 入力
-user_input = st.text_input("入力してください:", st.session_state.correct_input)
+user_input = st.text_input("入力してください:", value=st.session_state.correct_input)
 
 # タイマー開始
 if user_input and st.session_state.start_time is None:
     st.session_state.start_time = time.time()
 
-# 判定
-if target.startswith(user_input):
-    # 正しい部分を更新
-    st.session_state.correct_input = user_input
-else:
-    # 間違った場合 → 強制的に正しい部分まで戻す
-    st.session_state.correct_input = st.session_state.correct_input
+# 一文字ずつ判定
+if len(user_input) > len(st.session_state.correct_input):
+    # 新しい文字が入力された場合
+    next_index = len(st.session_state.correct_input)
+    if target.startswith(user_input):
+        # 正しい場合のみ更新
+        st.session_state.correct_input = user_input
+    else:
+        # 間違った場合 → 入力を戻す
+        st.warning("❌ 間違いです！")
+        st.session_state.correct_input = st.session_state.correct_input
+        # 再描画で強制的に戻す
+        st.experimental_rerun()
 
 # 正誤表示
 colored_text = ""
