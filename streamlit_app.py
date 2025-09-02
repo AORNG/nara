@@ -21,15 +21,13 @@ p5_code = """
         }
       }
 
-      // キーが押されたとき
-      function keyPressed() {
-        if (keyCode === ENTER) {   // Enterキー判定
-          circles.push({
-            x: mouseX,
-            y: mouseY,
-            color: color(random(255), random(255), random(255))
-          });
-        }
+      // マウスがクリックされたとき
+      function mousePressed() {
+        circles.push({
+          x: mouseX,
+          y: mouseY,
+          color: color(random(255), random(255), random(255))
+        });
       }
     </script>
   </head>
@@ -38,5 +36,5 @@ p5_code = """
 </html>
 """
 
-st.title("Streamlit + p5.js デモ（Enterキーでマウス位置に円追加）")
+st.title("Streamlit + p5.js デモ（クリックで円追加）")
 components.html(p5_code, height=450)
