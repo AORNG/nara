@@ -1,7 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# p5.jsスケッチをHTMLで埋め込む
 p5_code = """
 <!DOCTYPE html>
 <html>
@@ -12,7 +11,6 @@ p5_code = """
 
       function setup() {
         createCanvas(400, 400);
-        background(220);
       }
     
       function draw() {
@@ -23,12 +21,12 @@ p5_code = """
         }
       }
 
-      // キーが押されたときのイベント
+      // キーが押されたとき
       function keyPressed() {
-        if (key === 'Enter') {
+        if (keyCode === ENTER) {   // Enterキー判定
           circles.push({
-            x: random(width),
-            y: random(height),
+            x: mouseX,
+            y: mouseY,
             color: color(random(255), random(255), random(255))
           });
         }
@@ -40,5 +38,5 @@ p5_code = """
 </html>
 """
 
-st.title("Streamlit + p5.js デモ（Enterキーで円追加）")
+st.title("Streamlit + p5.js デモ（Enterキーでマウス位置に円追加）")
 components.html(p5_code, height=450)
